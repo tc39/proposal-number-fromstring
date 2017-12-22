@@ -106,6 +106,16 @@ Number.fromString('1234', 37);
 // → RangeError
 ```
 
+Unlike `parseInt`, `fromString` throws a `TypeError` exception when `string` is not a string.
+
+```js
+Number.parseInt(true, 32);
+// → 978894
+
+Number.fromString(true, 32);
+// → TypeError
+```
+
 ### FAQ
 
 #### What about legacy octal integers?
