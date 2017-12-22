@@ -1,4 +1,4 @@
-# ECMAScript proposal: `{BigInt,Number.fromString}`
+# ECMAScript proposal: `{BigInt,Number}.fromString`
 
 ## Status
 
@@ -112,7 +112,7 @@ Number.fromString('1234', 37);
 
 `fromString` intentionally lacks special handling for legacy octal integer literals, i.e. those without the explicit `0o` or `0O` prefix such as `010`. In other words, `Number.fromString('010')` throws a `SyntaxError` exception.
 
-### What about numeric separators?
+#### What about numeric separators?
 
 `fromString` does not need to support [numeric separators](https://github.com/tc39/proposal-numeric-separator), as they cannot occur in `{BigInt,Number}.prototype.toString(radix)` output. `Number.fromString('1_000_000_000')` throws a `SyntaxError` exception.
 
