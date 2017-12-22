@@ -116,6 +116,10 @@ Number.fromString('1234', 37);
 
 `fromString` does not need to support [numeric separators](https://github.com/tc39/proposal-numeric-separator), as they cannot occur in `{BigInt,Number}.prototype.toString(radix)` output. `Number.fromString('1_000_000_000')` throws a `SyntaxError` exception.
 
+#### Does `BigInt.fromString(string)` support the `n` suffix?
+
+`BigInt.fromString` does not need to support the `n` suffix used for `BigInt` literals, as it doesn’t occur in `BigInt.prototype.toString(radix)` output. Furthermore, supporting it would introduce an ambiguity for radices where `n` is a valid digit: should `BigInt.fromString('1n', 32)` return `1` or `55`? With the current proposal, `BigInt.fromString('1n', 32)` returns `55`, and `BigInt.fromString('1n')` throws a `SyntaxError` exception.
+
 ## Specification
 
 * [Ecmarkup source](https://github.com/mathiasbynens/proposal-number-fromstring/blob/master/spec.html)
