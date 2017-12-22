@@ -15,13 +15,15 @@ This proposal is at stage 0 of [the TC39 process](https://tc39.github.io/process
 For `Number` values, there is [`parseInt(string, radix = 10)`](https://tc39.github.io/ecma262/#sec-parseint-string-radix) and [`Number.parseInt(string, radix = 10)`](https://tc39.github.io/ecma262/#sec-number.parseint), but its behavior is suboptimal:
 
 - It returns `NaN` instead of throwing a `SyntaxError` exception when `string` does not represent a number.
-- It returns `NaN` instead of throwing a `RangeError` exception when `radix !== 0 && radix < 2` or `radix > 36`.
+- It returns `NaN` instead of throwing a `RangeError` exception when `radix` is not valid (i.e. `radix !== 0 && radix < 2` or `radix > 36`).
+- It accepts radix `0`, treating it as `10` instead, which does not make sense.
 - It supports hexadecimal integer literal prefixes `0x` and `0X` but lacks support for octal integer literal prefixes `0o` and `0O` or binary integer literal prefixes `0b` and `0B`, which is inconsistent.
+- It ignores leading whitespace and trailing non-digit characters.
 - The fact that `parseInt` has some level of support for integer literal prefixes means that it not a clear counterpart to `toString`.
 
 ## Proposed solution
 
-We propose extending both `BigInt` and `Number` with a new static `fromString(string, radix = 10)` method which acts as the inverse of `{BigInt,Number}.prototype.toString(radix)`.
+We propose extending both `BigInt` and `Number` with a new static `fromString(string, radix = 10)` method which acts as the inverse of `{BigInt,Number}.prototype.toString(radix = 10)`. It accepts only ASCII-case-insensitive strings that can be produced by `{BigInt,Number}.prototype.toString(radix = 10)`, and throws an exception for any other input.
 
 ## High-level API
 
@@ -48,15 +50,24 @@ Number.parseInt('0xC0FFEE');
 // → 12648430
 Number.parseInt('0o755');
 // → 0
-Number.parseInt('0b00110011');
+Number.parseInt('0b00101010');
 // → 0
 
 Number.fromString('0xC0FFEE');
-// → 0
+// → SyntaxError
 Number.fromString('0o755');
-// → 0
-Number.fromString('0b00110011');
-// → 0
+// → SyntaxError
+Number.fromString('0b00101010');
+// → SyntaxError
+
+Number.fromString('C0FFEE', 16);
+// → 12648430 === 0xC0FFEE
+Number.fromString('c0ffee', 16);
+// → 12648430 === 0xc0ffee
+Number.fromString('755', 8);
+// → 493 === 0o755
+Number.fromString('00101010', 2);
+// → 42 === 0b00101010
 ```
 
 Unlike `parseInt`, `fromString` throws a `SyntaxError` exception when `string` does not represent a number.
@@ -77,14 +88,18 @@ Number.fromString('x');
 // → SyntaxError
 ```
 
-Unlike `parseInt`, `fromString` throws a `RangeError` exception when `radix !== 0 && radix < 2` or `radix > 36`.
+Unlike `parseInt`, `fromString` throws a `RangeError` exception when `radix < 2` or `radix > 36`.
 
 ```js
+Number.parseInt('1234', 0);
+// → 1234
 Number.parseInt('1234', 1);
 // → NaN
 Number.parseInt('1234', 37);
 // → NaN
 
+Number.fromString('1234', 0);
+// → RangeError
 Number.fromString('1234', 1);
 // → RangeError
 Number.fromString('1234', 37);
@@ -95,7 +110,11 @@ Number.fromString('1234', 37);
 
 #### What about legacy octal integers?
 
-`fromString` intentionally lacks special handling for legacy octal integer literals, i.e. those without the explicit `0o` or `0O` prefix such as `010`. In other words, `Number.fromString('010')` results in `10` (and not `8`).
+`fromString` intentionally lacks special handling for legacy octal integer literals, i.e. those without the explicit `0o` or `0O` prefix such as `010`. In other words, `Number.fromString('010')` throws a `SyntaxError` exception.
+
+### What about numeric separators?
+
+`fromString` does not need to support [numeric separators](https://github.com/tc39/proposal-numeric-separator), as they cannot occur in `{BigInt,Number}.prototype.toString(radix)` output. `Number.fromString('1_000_000_000')` throws a `SyntaxError` exception.
 
 ## Specification
 
