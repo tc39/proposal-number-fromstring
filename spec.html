@@ -30,13 +30,10 @@ contributors: Mathias Bynens
       1. Let _sign_ be -1.
       1. Remove the first code unit from _S_.
       1. If _S_ is empty, throw a *SyntaxError* exception.
-    1. If _R_ = 0, throw a *RangeError* exception.
-    1. Let _R_ be ? ToInt32(_radix_).
-    1. If _R_ = 0, then
-      1. Let _R_ be 10.
-    1. Else,
-      1. Assert: _R_ &ne; 0.
-      1. If _R_ &lt; 2 or _R_ &gt; 36, throw a *RangeError* exception.
+    1. If _radix_ is not present, let _R_ be 10.
+    1. Else if _radix_ is *undefined*, let _R_ be 10.
+    1. Else, let _R_ be ? ToInteger(_radix_).
+    1. If _R_ &lt; 2 or _R_ &gt; 36, throw a *RangeError* exception.
     1. If _S_ represents a mathematical integer value in radix-_R_ notation, using the letters <b>A</b>-<b>Z</b> and <b>a</b>-<b>z</b> for digits with values 10 through 35, then
       1. Let _mathInt_ be that mathematical integer value.
     1. Else, throw a *SyntaxError* exception.
@@ -57,13 +54,10 @@ contributors: Mathias Bynens
       1. Let _sign_ be -1.
       1. Remove the first code unit from _S_.
       1. If _S_ is empty, throw a *SyntaxError* exception.
-    1. If _R_ = 0, throw a *RangeError* exception.
-    1. Let _R_ be ? ToInt32(_radix_).
-    1. If _R_ = 0, then
-      1. Let _R_ be 10.
-    1. Else,
-      1. Assert: _R_ &ne; 0.
-      1. If _R_ &lt; 2 or _R_ &gt; 36, throw a *RangeError* exception.
+    1. If _radix_ is not present, let _R_ be 10.
+    1. Else if _radix_ is *undefined*, let _R_ be 10.
+    1. Else, let _R_ be ? ToInteger(_radix_).
+    1. If _R_ &lt; 2 or _R_ &gt; 36, throw a *RangeError* exception.
     1. If _S_ represents a mathematical number value in radix-_R_ notation, using the letters <b>A</b>-<b>Z</b> and <b>a</b>-<b>z</b> for digits with values 10 through 35, then
       1. Let _mathNum_ be that mathematical number value.
     1. Else, throw a *SyntaxError* exception.
