@@ -34,7 +34,7 @@ contributors: Mathias Bynens
     1. Else if _radix_ is *undefined*, let _R_ be 10.
     1. Else, let _R_ be ? ToInteger(_radix_).
     1. If _R_ &lt; 2 or _R_ &gt; 36, throw a *RangeError* exception.
-    1. If _string_ represents a mathematical integer value in radix-_R_ notation, using the characters <b>0</b>-<b>9</b> for digits with values 0 to 9, and the letters <b>A</b>-<b>Z</b> and <b>a</b>-<b>z</b> for digits with values 10 through 35, then
+    1. If _string_ represents a mathematical integer value in radix-_R_ notation, using the characters <b>0</b>-<b>9</b> for digits with values 0 to 9, and the letters <b>a</b>-<b>z</b> for digits with values 10 through 35, then
       1. Let _mathInt_ be that mathematical integer value.
     1. Else, throw a *SyntaxError* exception.
     1. Let _number_ be _sign_ &times; _mathInt_.
@@ -58,7 +58,7 @@ contributors: Mathias Bynens
     1. Else if _radix_ is *undefined*, let _R_ be 10.
     1. Else, let _R_ be ? ToInteger(_radix_).
     1. If _R_ &lt; 2 or _R_ &gt; 36, throw a *RangeError* exception.
-    1. If _string_ represents a mathematical number value in radix-_R_ notation, using the characters <b>0</b>-<b>9</b> for digits with values 0 to 9, and the letters <b>A</b>-<b>Z</b> and <b>a</b>-<b>z</b> for digits with values 10 through 35, then
+    1. If _string_ represents a mathematical number value in radix-_R_ notation, using the characters <b>0</b>-<b>9</b> for digits with values 0 to 9, and the letters <b>a</b>-<b>z</b> for digits with values 10 through 35, then
       1. Let _mathNum_ be that mathematical number value.
     1. Else, throw a *SyntaxError* exception.
     1. Let _number_ be _sign_ &times; _mathNum_.
