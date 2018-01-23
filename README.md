@@ -17,9 +17,9 @@ For `Number` values, there is [`parseInt(string, radix = 10)`](https://tc39.gith
 - It returns `NaN` instead of throwing a `SyntaxError` exception when `string` does not represent a number.
 - It returns `NaN` instead of throwing a `RangeError` exception when `radix` is not valid (i.e. `radix !== 0 && radix < 2` or `radix > 36`).
 - It accepts radix `0`, treating it as `10` instead, which does not make sense.
-- It supports hexadecimal integer literal prefixes `0x` and `0X` but lacks support for octal integer literal prefixes `0o` and `0O` or binary integer literal prefixes `0b` and `0B`, which is inconsistent.
 - It ignores leading whitespace and trailing non-digit characters.
-- The fact that `parseInt` has some level of support for integer literal prefixes means that it not a clear counterpart to `toString`.
+- It supports hexadecimal integer literal prefixes `0x` and `0X` but lacks support for octal integer literal prefixes `0o` and `0O` or binary integer literal prefixes `0b` and `0B`, which is inconsistent.
+- The fact that `parseInt` has some level of support for integer literal prefixes means that it’s not a clear counterpart to `toString`.
 
 ## Proposed solution
 
